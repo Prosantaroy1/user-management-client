@@ -3,6 +3,30 @@ import UserCollection from "./pages/UserCollection/UserCollection"
 
 function App() {
 
+  const handleAdd=(e)=>{
+     e.preventDefault();
+     const form=e.target;
+     const name=form.name.value;
+     const email=form.email.value;
+     const photoUrl=form.photo.value;
+     const color=form.color.value;
+     const userData={name,email,photoUrl,color};
+
+     console.log(userData)
+
+     fetch('http://localhost:5000/users',{
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+     })
+     .then(res=>res.json())
+     .then(data=>{
+      console.log(data)
+     }) 
+
+  }
 
   return (
     <div className="px-14">
@@ -21,7 +45,7 @@ function App() {
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
             <h3 className="text-xl">Add to User</h3>
-            <form className="space-y-5 pt-4">
+            <form onSubmit={handleAdd} className="space-y-5 pt-4">
               <label className="input input-bordered flex items-center gap-2">
                 Name
                 <input type="text" name="name" className="grow" placeholder="Daisy" />
@@ -38,7 +62,7 @@ function App() {
                 Favorite Color
                 <input type="text" name="color" className="grow" placeholder="Favorite Color" />
               </label>
-
+              <input type="submit" className="w-1/2 mx-auto rounded-2xl bg-black text-white" value="Add User" />
             </form>
           </div>
         </dialog>
